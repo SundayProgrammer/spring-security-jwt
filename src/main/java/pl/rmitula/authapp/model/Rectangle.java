@@ -5,7 +5,6 @@ import lombok.Getter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -25,6 +24,9 @@ public class Rectangle {
     private String description;
 
     private Double price;
+
+    @NotBlank
+    private List<TupleElement<Double, Double>> points;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rectangles")
