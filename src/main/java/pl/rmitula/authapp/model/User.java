@@ -48,6 +48,9 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private Set<Rectangle> owner = new HashSet<>();
+
     public User(@NotBlank @Size(max = 40) String name, @NotBlank @Size(max = 40) @Email String email, @NotBlank @Size(max = 100) String password) {
         this.name = name;
         this.email = email;
