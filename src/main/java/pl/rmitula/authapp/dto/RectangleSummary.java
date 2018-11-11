@@ -13,8 +13,10 @@ import pl.rmitula.authapp.model.StatusName;
 public class RectangleSummary {
     private Long id;
     private String name;
+    private String addres;
     private String description;
     private Double price;
     private StatusName status;
+    private List<>
     private Long userId;
 }
