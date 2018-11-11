@@ -12,7 +12,7 @@ public class RectangleService {
                 .description(rectangle.getDescription())
                 .price(rectangle.getPrice())
                 .status(rectangle.getStatus())
-                .userId(rectangle.getUserId())
+                .userId(rectangle.getUser().getId())
                 .build();
     }
 }
