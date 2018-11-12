@@ -29,15 +29,10 @@ public class RectangleController {
         this.rectangleRepository = rectangleRepository;
     }
 
-    @GetMapping("{id}")
+    @GetMapping
     @PreAuthorize("hasRole('USER')")
-    public List<RectangleSummary> getRectanglesList(@PathVariable Long id) {
-        List<Rectangle> rectangle = rectangleRepository.findByUser(id);
-        if (!rectangle.isEmpty()) {
-            return rectangleService.getRectangleSummaryList(rectangle);
-        } else {
-            throw new NotFoundException("Rectangle with given ID not found.");
-        }
+    public List<RectangleSummary> getRectanglesList(@CurrentUser UserPrincipal userPrincipal) {
+        return rectangleService.getRectangleSummaryList(userPrincipal.getId());
     }
 
     @PostMapping("save")

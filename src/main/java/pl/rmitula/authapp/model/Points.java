@@ -1,6 +1,8 @@
 package pl.rmitula.authapp.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -8,8 +10,9 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "points")
-public class RectanglePointList {
+public class Points {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +26,7 @@ public class RectanglePointList {
     @NotNull
     private Double y;
 
-    public RectanglePointList(Rectangle rectangle, @NotNull Double x, @NotNull Double y) {
+    public Points(Rectangle rectangle, @NotNull Double x, @NotNull Double y) {
         this.rectangle = rectangle;
         this.x = x;
         this.y = y;

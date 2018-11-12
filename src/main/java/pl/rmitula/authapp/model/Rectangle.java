@@ -1,6 +1,7 @@
 package pl.rmitula.authapp.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "rectangles")
 public class Rectangle {
 
@@ -34,7 +36,7 @@ public class Rectangle {
 
     @Setter
     @OneToMany(mappedBy = "rectangle")
-    private List<RectanglePointList> points;
+    private List<Points> points;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)

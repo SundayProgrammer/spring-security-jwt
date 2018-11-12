@@ -11,5 +11,6 @@ import java.util.Optional;
 @Repository
 public interface RectangleRepository extends JpaRepository<Rectangle, Long> {
     List<Rectangle> findByUser(Long id);
+    List<Rectangle> findByUser(User user);
     Optional<Rectangle> findByUserOrName(Long id, String name);
 }

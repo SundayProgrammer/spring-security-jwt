@@ -8,7 +8,7 @@ import pl.rmitula.authapp.exception.AppException;
 import pl.rmitula.authapp.exception.BadRequestException;
 import pl.rmitula.authapp.exception.NotFoundException;
 import pl.rmitula.authapp.model.Rectangle;
-import pl.rmitula.authapp.model.RectanglePointList;
+import pl.rmitula.authapp.model.Points;
 import pl.rmitula.authapp.model.User;
 import pl.rmitula.authapp.repository.RectanglePointsRepository;
 import pl.rmitula.authapp.repository.RectangleRepository;
@@ -47,7 +47,6 @@ public class RectangleService {
                 rectangle.getAddress(),
                 rectangle.getDescription(),
                 rectangle.getPrice(),
-                rectangle.getStatus().getStatusName(),
                 rectangle.getPoints(),
                 rectangle.getUser().getId()
         )));
@@ -65,25 +64,36 @@ public class RectangleService {
                 .name(rectangle.getName())
                 .description(rectangle.getDescription())
                 .price(rectangle.getPrice())
-                .status(rectangle.getStatus().getStatusName())
                 .userId(rectangle.getUser().getId())
                 .build();
     }
 
-    public List<RectangleSummary> getRectangleSummaryList(List<Rectangle> rectangles) {
-        List<RectangleSummary> rectangleSummaries = new ArrayList<>();
-        rectangles.forEach(rectangle -> rectangleSummaries.add(new RectangleSummary(
-                rectangle.getId(),
-                rectangle.getName(),
-                rectangle.getAddress(),
-                rectangle.getDescription(),
-                rectangle.getPrice(),
-                rectangle.getStatus().getStatusName(),
-                rectangle.getPoints(),
-                rectangle.getUser().getId()
-        )));
+    public List<RectangleSummary> getRectangleSummaryList(Long id) {
+        Optional<User> user = userRepository.findById(id);
 
-        return rectangleSummaries;
+        if (user.isPresent()) {
+            List<Rectangle> rectangles = rectangleRepository.findByUser(user.get());
+
+            if (!rectangles.isEmpty()) {
+                System.out.println(rectangles.size());
+                List<RectangleSummary> rectangleSummaries = new ArrayList<>();
+                rectangles.forEach(rectangle -> rectangleSummaries.add(new RectangleSummary(
+                        rectangle.getId(),
+                        rectangle.getName(),
+                        rectangle.getAddress(),
+                        rectangle.getDescription(),
+                        rectangle.getPoints(),
+                        rectangle.getUser().getId()
+                )));
+
+                return rectangleSummaries;
+            } else {
+                throw new NotFoundException("Not found rectangles for user with [id: " + id + "]");
+            }
+
+        } else {
+            throw new NotFoundException("Not found user with [id: " + id + "]");
+        }
     }
 
     public Long saveRectangle(SaveRectangleRequest request, Long id) {
@@ -106,10 +116,10 @@ public class RectangleService {
             if (createdRectangle.isPresent()) {
                 request.getPoints().forEach(point -> {
                     rectanglePointsRepository
-                            .save(new RectanglePointList(rec, point.getX(), point.getY()));
+                            .save(new Points(rec, point.getX(), point.getY()));
                 });
 
-                List<RectanglePointList> points = rectanglePointsRepository.findAllByRectangle(rec);
+                List<Points> points = rectanglePointsRepository.findAllByRectangle(rec);
                 rec.setPoints(points);
 
                 rectangleRepository.save(rec);
