@@ -17,9 +17,15 @@ public class RectanglePointList {
 
     @ManyToOne
     @JoinColumn(name = "points")
-    private Long rectangle;
+    private Rectangle rectangle;
     @NotNull
     private Double x;
     @NotNull
     private Double y;
+
+    public RectanglePointList(Rectangle rectangle, @NotNull Double x, @NotNull Double y) {
+        this.rectangle = rectangle;
+        this.x = x;
+        this.y = y;
+    }
 }

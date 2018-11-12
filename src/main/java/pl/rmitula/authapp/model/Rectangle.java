@@ -1,6 +1,7 @@
 package pl.rmitula.authapp.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,19 +22,36 @@ public class Rectangle {
     private String name;
 
     @NotBlank
+    @Size(max = 100)
+    private String address;
+
+    @NotBlank
     @Size(max = 200)
     private String description;
 
+    @Setter
     private Double price;
 
+    @Setter
     @OneToMany(mappedBy = "rectangle")
     private List<RectanglePointList> points;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rectangles")
-    private StatusName status;
+    private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
     private User user;
+
+    public Rectangle(@NotBlank @Size(max = 100) String name,
+                     @NotBlank @Size(max = 100) String address,
+                     @NotBlank @Size(max = 200) String description,
+                     User user) {
+        this.name = name;
+        this.address = address;
+        this.description = description;
+        this.user = user;
+    }
 }

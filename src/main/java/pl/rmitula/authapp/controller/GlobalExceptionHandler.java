@@ -13,6 +13,8 @@ import pl.rmitula.authapp.exception.ConflictException;
 import pl.rmitula.authapp.dto.ErrorResponse;
 import pl.rmitula.authapp.exception.NotFoundException;
 
+import java.io.IOException;
+
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -43,5 +45,12 @@ public class GlobalExceptionHandler {
     public ErrorResponse httpClientErrorHandler(HttpClientErrorException httpClientErrorException) {
         log.info(httpClientErrorException.getMessage());
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), httpClientErrorException.getMessage());
+    }
+
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse jsonBadRequest(RuntimeException exception) {
+        log.info(exception.getMessage());
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
 }

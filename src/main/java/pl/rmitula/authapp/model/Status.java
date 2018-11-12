@@ -19,7 +19,7 @@ public class Status {
     @Enumerated(EnumType.STRING)
     @NaturalId
     @Column(length = 60)
-    private StatusName status;
+    private StatusName statusName;
 
     @OneToMany(mappedBy = "status")
     private Set<Rectangle> rectangles = new HashSet<>();
